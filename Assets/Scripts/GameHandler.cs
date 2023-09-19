@@ -5,21 +5,17 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     public string state = "SCENE_INTRO";
-    
-
 
     // Countdown
-    public int countdownLength = 3;
-    int timeRemaining;
+    public float countdownLength = 3f;
+    float timeRemaining;
 
     // Gameplay
-    public int roundLength = 30000; // 30 seconds
+    public float roundLength = 30000f; // 30 seconds
     public bool pause = false;
 
     // Score Screen
     public int score = 0;
-
-   
 
     // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCENE_OUTRO , SCORE_SCREEN
 
