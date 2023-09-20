@@ -4,30 +4,53 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class student : MonoBehaviour
+public class Student : MonoBehaviour
 {
-
-    public float obedience = 0f;
+    // State tracker
+    bool tryingToEscape = false;
+    
     float randomNumber;
 
     // Obedience meter
+    public float obedience = 100f;
     public Image meterBar;
     public float meterAmount = 100f;
 
     // Update is called once per frame
     void Update(){
-        randomNumber = Random.Range(0, 100);
-        if (randomNumber > 97){
-            Misbehave();
+
+        // Check button state
+        if (Input.GetKey("space")){
+
+            // Escaping?
+            if (tryingToEscape){
+
+                // Caught! - reset obedience and bool
+                obedience = 100;
+                tryingToEscape = false;
+
+            } else {
+
+                // Not escaping - reduce obedience meter fast
+                reduceMeter(0.05f);
+
+            }
+
+        } else {         
+            reduceMeter(0.005f);
         }
 
-        if (randomNumber < 3){ // temp 
-            increaseMeter(1); 
-        }
-    }
+        // Update student state
+        if(!tryingToEscape){
 
-    void Misbehave(){
-        reduceMeter(1);
+            // Not escaping, induce a chance to escape
+
+        } else {
+
+            // Proceed in escaping...
+
+        }
+
     }
 
     public void reduceMeter(float amount){
