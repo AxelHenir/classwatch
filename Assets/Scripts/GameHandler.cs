@@ -10,11 +10,11 @@ public class GameHandler : MonoBehaviour
 
     // Countdown
     public int countdownLength = 3;
-    int timeRemaining;
+    float timeRemaining;
 
     // Gameplay
-    public int roundLength = 30000; // 30 seconds
-    public bool pause = false;
+    public int roundLength = 30; // 30 seconds
+    public bool paused = false;
 
     // Score Screen
     public int score = 0;
@@ -74,18 +74,37 @@ public class GameHandler : MonoBehaviour
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
+            print (timeRemaining);
+
         } else {
             state = "GAMEPLAY";
             timeRemaining = roundLength;
+
         }
     }
 
     void gameplay(){
-        if (pause){
-            // Do Nothing-
+
+        // Check if paused
+        if (paused){
+
         } else {
             if (timeRemaining > 0){
+
+                // Remove time
                 timeRemaining -= Time.deltaTime;
+                print (timeRemaining);
+
+                // Update the prof
+                if (Input.GetKey("space")){
+
+                    print("THE PROF IS WATCHING");
+
+                } else {
+                    
+                    print("THE PROF IS WRITING");
+
+                }
 
                 
             } else {
