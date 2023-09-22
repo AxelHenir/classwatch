@@ -1,40 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour
 {
+    // Game state
+    // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCENE_OUTRO , SCORE_SCREEN
     public string state = "SCENE_INTRO";
     
     // Debug UI
     public bool  debugUI;
+    public TMP_Text lessonMultiplierTEXT;
     public TMP_Text sceneStateDEBUG;
     public TMP_Text timeRemainingTEXT;
     public TMP_Text announcementTEXT;
-    
+
+    // Lesson (level length, difficulty)
+    public float lessonLengthSeconds = 25;
+    public float lessonRemaining;
+    public Image lessonBar;
+    public float meterAmount = 100f;
+
+    public float baseLessonRate = 1.0f;
+    public float baseLessonPerTick = 0.005f;
+    public float lessonRateMultiplier;
+    public float lessonMultiplierGrowth = 0.005f;
+
     // Countdown
     public int countdownLength = 3;
     float timeRemaining;
 
     // Gameplay
-    public int roundLength = 30; // 30 seconds
+    public int roundLengthSeconds = 30; 
     public bool paused = false;
 
-    // Score Screen
+    // Scoring
     public int score = 0;
+    public int escapedStudents = 0;
 
-   
+// ============================================================
 
-    // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCENE_OUTRO , SCORE_SCREEN
-
-    // PAUSED - [SCENE INTRO], CAMERA, SETTLE IN-
-    // PAUSED - [COUNTDOWN] SEQUENCE, 3.. 2.. 1.. GO!!
-    // UNPAUSED - [GAMEPLAY], TIMER COUNTS DOWN
-    // UNPAUSED - TIMER IS ABOUT TO [EXPIRE]... 3.. 2.. 1.. STOP!!
-    // PAUSED - [SCENE OUTRO], CAMERA, SETTLE IN-
-    // PAUSED - [SCORE SCREEN], SCORE, DETAILS, Time permitting: Upgrades?
-
-    // Update is called once per frame
     void Update(){
 
         // Debug UI
@@ -77,38 +84,54 @@ public class GameHandler : MonoBehaviour
     }
 
     void countdown(){
+        announcementTEXT.text = ("");
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
-            timeRemainingTEXT.text = timeRemaining.ToString("#.00");
+            timeRemainingTEXT.text = timeRemaining.ToString("0");
 
         } else {
             state = "GAMEPLAY";
-            timeRemaining = roundLength;
+            timeRemaining = roundLengthSeconds;
+            lessonRemaining = lessonLengthSeconds; 
+            lessonRateMultiplier = baseLessonRate;
+
+            //spawn students?
 
         }
     }
 
     void gameplay(){
 
+        lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
+
         // Check if paused
         if (paused){
 
+            announcementTEXT.text = ("Paused");
+
         } else {
-            if (timeRemaining > 0){
+
+            announcementTEXT.text = ("");
+            if (timeRemaining >= 0){
 
                 // Remove time
                 timeRemaining -= Time.deltaTime;
-                timeRemainingTEXT.text = timeRemaining.ToString("#.00");
+                timeRemainingTEXT.text = timeRemaining.ToString("0.00");
 
                 // Update the prof
                 if (Input.GetKey("space")){
 
+                    lessonRateMultiplier = baseLessonRate;
                     print("THE PROF IS WATCHING");
 
                 } else {
                     
-                    print("THE PROF IS WRITING");
+                    lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
+                    lessonRateMultiplier += lessonMultiplierGrowth;
+
+                    meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
+                    lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
 
                 }
 
@@ -121,13 +144,14 @@ public class GameHandler : MonoBehaviour
     }
 
     void finish(){
-        if (timeRemaining > 0)
-        {
+
+        announcementTEXT.text = ("Finished!");
+        if (timeRemaining >= 0){
             timeRemaining -= Time.deltaTime;
-            timeRemainingTEXT.text = timeRemaining.ToString("#.00");
+            timeRemainingTEXT.text = timeRemaining.ToString("0");
 
         } else {
-            state = "OUTRO";
+            state = "SCENE_OUTRO";
         }
     }
 
@@ -139,11 +163,12 @@ public class GameHandler : MonoBehaviour
     }
 
     void scoreScreen(){
-        announcementTEXT.text = ("Score Screen - Press Space to Restart");
-        if (Input.GetKey("space")){
-            state = "INTRO";
+        announcementTEXT.text = ("Score Screen - Press enter to Restart");
+        if (Input.GetKey("return")){
+            state = "SCENE_INTRO";
         }
     }
+
 }
 
 
