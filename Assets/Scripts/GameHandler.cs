@@ -5,7 +5,13 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     public string state = "SCENE_INTRO";
-
+    
+    // Debug UI
+    public bool  debugUI;
+    public TMP_Text sceneStateDEBUG;
+    public TMP_Text timeRemainingTEXT;
+    public TMP_Text announcementTEXT;
+    
     // Countdown
     public int countdownLength = 3;
     float timeRemaining;
@@ -17,6 +23,8 @@ public class GameHandler : MonoBehaviour
     // Score Screen
     public int score = 0;
 
+   
+
     // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCENE_OUTRO , SCORE_SCREEN
 
     // PAUSED - [SCENE INTRO], CAMERA, SETTLE IN-
@@ -26,13 +34,15 @@ public class GameHandler : MonoBehaviour
     // PAUSED - [SCENE OUTRO], CAMERA, SETTLE IN-
     // PAUSED - [SCORE SCREEN], SCORE, DETAILS, Time permitting: Upgrades?
 
-    // Start is called before the first frame update
-    void Start(){
-
-    }
-
     // Update is called once per frame
     void Update(){
+
+        // Debug UI
+        if (debugUI){
+            sceneStateDEBUG.text = "SCENE STATE: " + state;
+        } else {
+            sceneStateDEBUG.text = "";
+        }
 
         // Call the state's update method
         switch (state)
@@ -59,7 +69,7 @@ public class GameHandler : MonoBehaviour
     }  
 
     void intro(){
-        print ("Intro - Press Space to begin");
+        announcementTEXT.text = ("Intro - Press Space to begin");
         if (Input.GetKey("space")){
             state = "COUNTDOWN";
             timeRemaining = countdownLength;
@@ -70,7 +80,7 @@ public class GameHandler : MonoBehaviour
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
-            print (timeRemaining);
+            timeRemainingTEXT.text = timeRemaining.ToString("#.00");
 
         } else {
             state = "GAMEPLAY";
@@ -89,7 +99,7 @@ public class GameHandler : MonoBehaviour
 
                 // Remove time
                 timeRemaining -= Time.deltaTime;
-                print (timeRemaining);
+                timeRemainingTEXT.text = timeRemaining.ToString("#.00");
 
                 // Update the prof
                 if (Input.GetKey("space")){
@@ -114,23 +124,25 @@ public class GameHandler : MonoBehaviour
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
+            timeRemainingTEXT.text = timeRemaining.ToString("#.00");
+
         } else {
             state = "OUTRO";
         }
     }
 
     void outro(){
-        print ("Outro - Press Space to continue");
+        announcementTEXT.text = ("Outro - Press Space to continue");
         if (Input.GetKey("space")){
             state = "SCORE_SCREEN";
         } 
     }
 
     void scoreScreen(){
-        print ("Score Screen - Press Space to Restart");
+        announcementTEXT.text = ("Score Screen - Press Space to Restart");
         if (Input.GetKey("space")){
             state = "INTRO";
-        } 
+        }
     }
 }
 
