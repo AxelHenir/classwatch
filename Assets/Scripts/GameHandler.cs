@@ -36,6 +36,9 @@ public class GameHandler : MonoBehaviour
     public int roundLengthSeconds = 30; 
     public bool paused = false;
 
+    public GameObject studentPrefab;
+    public List<GameObject> students = new List<GameObject>();
+
     // Scoring
     public int score = 0;
     public int escapedStudents = 0;
@@ -96,7 +99,15 @@ public class GameHandler : MonoBehaviour
             lessonRemaining = lessonLengthSeconds; 
             lessonRateMultiplier = baseLessonRate;
 
-            //spawn students?
+            // Spawn a grid of students
+            for (int i = 3; i > 0; i--){
+                for(int j = 3; j > 0; j--){
+                    Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-10);
+                    GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
+                    students.Add(newStudent);
+                }
+            }
+            
 
         }
     }
@@ -139,6 +150,12 @@ public class GameHandler : MonoBehaviour
             } else {
                 state = "FINISH";
                 timeRemaining = countdownLength;
+
+                // TY Chat GPT <3
+                foreach (var prefab in students){
+                    Destroy(prefab);
+                }
+                students.Clear();
             }
         }
     }
