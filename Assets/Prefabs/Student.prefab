@@ -362,7 +362,7 @@ GameObject:
   - component: {fileID: 2070013194480913495}
   - component: {fileID: 1032193716104895578}
   m_Layer: 5
-  m_Name: Obedience Meter
+  m_Name: Escape Meter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,6 +510,7 @@ MonoBehaviour:
   timeUntilEscape: 0
   escaped: 0
   meterBar: {fileID: 7122058484943221527}
-  meterAmount: 3
   escapeTimer: 0
+  canvas: {fileID: 1537590324903086674}
+  canvasIsVisible: 0
   obedience: 100

@@ -91,9 +91,11 @@ public class GameHandler : MonoBehaviour
     }  
 
     void intro(){
+        scoreTEXT.text = ("Controls - space to watch class");
         announcementTEXT.text = ("Intro - Press Space to begin");
         if (Input.GetKey("space")){
             state = "COUNTDOWN";
+            scoreTEXT.text = ("");
             timeRemaining = countdownLength;
         } 
     }
@@ -212,6 +214,7 @@ public class GameHandler : MonoBehaviour
         scoreTEXT.text = ("FINAL SCORE: " + score);
         if (Input.GetKey("return")){
             state = "SCENE_INTRO";
+            scoreTEXT.text = ("");
         }
     }
 

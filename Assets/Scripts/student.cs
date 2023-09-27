@@ -17,10 +17,12 @@ public class Student : MonoBehaviour
     public float meterAmount = 100f;
     public float escapeTimer;
 
-    // Obedience meter
+    // Escape meter
+    public Canvas canvas;
     public float obedience = 100f;
 
     Animator _animator;
+
     
     // Start is called before the first frame update
     void Start() {
@@ -42,13 +44,17 @@ public class Student : MonoBehaviour
 
             } 
 
+            else {
+                obedience -= 0.005f;
+            }
+
         } 
 
         // Update student state
         if(!tryingToEscape){
 
             tryingToEscape = true;
-            escapeTimer = Random.Range(2, 4);
+            escapeTimer = Random.Range(2, 6);
             timeUntilEscape = escapeTimer;
             
             // // Not escaping, induce a chance to escape
@@ -84,16 +90,5 @@ public class Student : MonoBehaviour
         }
 
     }
-
-    public void reduceMeter(float amount){
-        meterAmount -= amount;
-        meterAmount = Mathf.Clamp(meterAmount, 0, 100);
-        meterBar.fillAmount = meterAmount / 100f;
-    }
-
-    public void increaseMeter(float amount){
-        meterAmount += amount;
-        meterAmount = Mathf.Clamp(meterAmount, 0, 100);
-        meterBar.fillAmount = meterAmount / 100f;
-    }
+    
 }
