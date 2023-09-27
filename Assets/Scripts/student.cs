@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public class Student : MonoBehaviour
 {
-    // State tracker
-    bool tryingToEscape = false;
-    
+    // escaping tracker
+    public bool tryingToEscape = false;
+    public float timeUntilEscape;
     float randomNumber;
+    public bool escaped = false;
 
     // Obedience meter
     public float obedience = 100f;
@@ -37,17 +38,28 @@ public class Student : MonoBehaviour
             }
 
         } else {         
-            reduceMeter(0.005f);
+            reduceMeter(0.0005f);
         }
 
         // Update student state
         if(!tryingToEscape){
 
             // Not escaping, induce a chance to escape
+            randomNumber = Random.Range(0,85);
+
+            if(obedience + randomNumber < 100f){
+                // Student will try to escape in X time
+                timeUntilEscape = Random.Range(5,10);
+            }
 
         } else {
 
             // Proceed in escaping...
+            timeUntilEscape -= Time.deltaTime;
+
+            if(timeUntilEscape <= 0){
+                escaped = true;
+            }
 
         }
 
