@@ -32,6 +32,8 @@ public class GameHandler : MonoBehaviour
     // Countdown
     public int countdownLength = 3;
     float timeRemaining;
+    public Image clockImg;
+    public Image bookShelfImg;
 
     // Gameplay
     public int roundLengthSeconds = 30; 
@@ -125,9 +127,8 @@ public class GameHandler : MonoBehaviour
     }
 
     void gameplay(){
-
+        clockImg.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
-
         // Check if paused
         if (paused){
 
@@ -161,6 +162,7 @@ public class GameHandler : MonoBehaviour
                     meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
                     lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
 
+                    bookShelfImg.fillAmount += -meterAmount / lessonLengthSeconds;
                 }
 
                 
