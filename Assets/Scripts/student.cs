@@ -47,16 +47,21 @@ public class Student : MonoBehaviour
             // Not escaping, induce a chance to escape
             randomNumber = Random.Range(0,85);
 
+            // Students are more likely to escape if their obedience is low.
             if(obedience + randomNumber < 100f){
-                // Student will try to escape in X time
+
+                // Set a timer between 5 and 10 seconds unti they escape.
                 timeUntilEscape = Random.Range(5,10);
+
+                // Initiate running away animation here?** =======================================
             }
 
         } else {
 
-            // Proceed in escaping...
+            // Decrement time remaining until escape
             timeUntilEscape -= Time.deltaTime;
 
+            // If no time left, the student escapes
             if(timeUntilEscape <= 0){
                 escaped = true;
             }

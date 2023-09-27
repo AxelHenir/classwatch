@@ -16,6 +16,7 @@ public class GameHandler : MonoBehaviour
     public TMP_Text sceneStateDEBUG;
     public TMP_Text timeRemainingTEXT;
     public TMP_Text announcementTEXT;
+    public TMP_Text scoreTEXT;
 
     // Lesson (level length, difficulty)
     public float lessonLengthSeconds = 25;
@@ -134,7 +135,7 @@ public class GameHandler : MonoBehaviour
                 if (Input.GetKey("space")){
 
                     lessonRateMultiplier = baseLessonRate;
-                    print("THE PROF IS WATCHING");
+                    //print("THE PROF IS WATCHING");
 
                 } else {
                     
@@ -153,6 +154,11 @@ public class GameHandler : MonoBehaviour
 
                 // TY Chat GPT <3
                 foreach (var prefab in students){
+
+                    if (prefab.escaped){ 
+                        escapedStudents++;
+                    }
+
                     Destroy(prefab);
                 }
                 students.Clear();
@@ -176,11 +182,16 @@ public class GameHandler : MonoBehaviour
         announcementTEXT.text = ("Outro - Press Space to continue");
         if (Input.GetKey("space")){
             state = "SCORE_SCREEN";
+
+            // Calculate the score
+            int lessonCompleted = 100 - Mathf.CeilToInt(lessonRemaining);
+            score = (lessonCompleted * 1000) + (-200 * escapedStudents);
         } 
     }
 
     void scoreScreen(){
-        announcementTEXT.text = ("Score Screen - Press enter to Restart");
+        announcementTEXT.text = ("Press enter to Restart");
+        scoreTEXT.text = ("FINAL SCORE: " + score);
         if (Input.GetKey("return")){
             state = "SCENE_INTRO";
         }
