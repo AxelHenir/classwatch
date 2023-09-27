@@ -44,7 +44,18 @@ public class GameHandler : MonoBehaviour
     public int score = 0;
     public int escapedStudents = 0;
 
+    // Animation
+    Animator _animator;
+
+    public GameObject profImage;
+   
+
 // ============================================================
+
+    // Start is called before the first frame update
+    void Start(){
+        _animator = profImage.GetComponent<Animator>();
+    }
 
     void Update(){
 
@@ -134,10 +145,15 @@ public class GameHandler : MonoBehaviour
                 // Update the prof
                 if (Input.GetKey("space")){
 
+                    // Turn prof
+                    _animator.SetBool("isTurning", true);
+
                     lessonRateMultiplier = baseLessonRate;
                     //print("THE PROF IS WATCHING");
 
                 } else {
+
+                    _animator.SetBool("isTurning", false);
                     
                     lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
                     lessonRateMultiplier += lessonMultiplierGrowth;

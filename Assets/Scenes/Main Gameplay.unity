@@ -771,6 +771,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 729944068}
   m_CullTransparentMesh: 1
+--- !u!1 &744436487 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8720194791605989073, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+  m_PrefabInstance: {fileID: 1365155499362633711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &744436491
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744436487}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 627c677c20268d14781a69c0cf30247e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &889325422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1641,6 +1667,32 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386609873}
   m_Mesh: {fileID: 8355691111285811017, guid: d586bd7267e9555488e8fbf6a7713b8e, type: 3}
+--- !u!1 &1391809794 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5565494510920386878, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+  m_PrefabInstance: {fileID: 1365155499362633711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1391809796
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391809794}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1544496023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1910,6 +1962,7 @@ MonoBehaviour:
   students: []
   score: 0
   escapedStudents: 0
+  profImage: {fileID: 744436487}
 --- !u!4 &1566651243
 Transform:
   m_ObjectHideFlags: 0
@@ -2287,10 +2340,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prof
       objectReference: {fileID: 0}
+    - target: {fileID: 7203770539350299115, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      propertyPath: sprites.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5565494510920386878, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1391809796}
+    - targetCorrespondingSourceObject: {fileID: 8720194791605989073, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 744436491}
   m_SourcePrefab: {fileID: 100100000, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
 --- !u!1001 &7302781778329837301
 PrefabInstance:
