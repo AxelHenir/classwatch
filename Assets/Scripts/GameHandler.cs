@@ -16,6 +16,7 @@ public class GameHandler : MonoBehaviour
     public TMP_Text sceneStateDEBUG;
     public TMP_Text timeRemainingTEXT;
     public TMP_Text announcementTEXT;
+    public TMP_Text scoreTEXT;
 
     // Lesson (level length, difficulty)
     public float lessonLengthSeconds = 25;
@@ -35,6 +36,9 @@ public class GameHandler : MonoBehaviour
     // Gameplay
     public int roundLengthSeconds = 30; 
     public bool paused = false;
+
+    public GameObject studentPrefab;
+    public List<GameObject> students = new List<GameObject>();
 
     // Scoring
     public int score = 0;
@@ -96,7 +100,15 @@ public class GameHandler : MonoBehaviour
             lessonRemaining = lessonLengthSeconds; 
             lessonRateMultiplier = baseLessonRate;
 
-            //spawn students?
+            // Spawn a grid of students
+            for (int i = 3; i > 0; i--){
+                for(int j = 3; j > 0; j--){
+                    Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-10);
+                    GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
+                    students.Add(newStudent);
+                }
+            }
+            
 
         }
     }
@@ -123,7 +135,7 @@ public class GameHandler : MonoBehaviour
                 if (Input.GetKey("space")){
 
                     lessonRateMultiplier = baseLessonRate;
-                    print("THE PROF IS WATCHING");
+                    //print("THE PROF IS WATCHING");
 
                 } else {
                     
@@ -139,6 +151,19 @@ public class GameHandler : MonoBehaviour
             } else {
                 state = "FINISH";
                 timeRemaining = countdownLength;
+
+                // TY Chat GPT <3
+                foreach (var prefab in students){
+
+                    /**
+                    if (prefab.escaped){ 
+                        escapedStudents++;
+                    }
+                    **/
+
+                    Destroy(prefab);
+                }
+                students.Clear();
             }
         }
     }
@@ -159,11 +184,16 @@ public class GameHandler : MonoBehaviour
         announcementTEXT.text = ("Outro - Press Space to continue");
         if (Input.GetKey("space")){
             state = "SCORE_SCREEN";
+
+            // Calculate the score
+            int lessonCompleted = 100 - Mathf.CeilToInt(lessonRemaining);
+            score = (lessonCompleted * 1000) + (-200 * escapedStudents);
         } 
     }
 
     void scoreScreen(){
-        announcementTEXT.text = ("Score Screen - Press enter to Restart");
+        announcementTEXT.text = ("Press enter to Restart");
+        scoreTEXT.text = ("FINAL SCORE: " + score);
         if (Input.GetKey("return")){
             state = "SCENE_INTRO";
         }
