@@ -484,6 +484,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2322f455dd08b6a49a367e6301206715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obedience: 100
+  tryingToEscape: 0
+  timeUntilEscape: 0
+  escaped: 0
   meterBar: {fileID: 7122058484943221527}
-  meterAmount: 100
+  meterAmount: 3
+  escapeTimer: 0
+  obedience: 100

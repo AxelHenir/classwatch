@@ -12,11 +12,14 @@ public class Student : MonoBehaviour
     float randomNumber;
     public bool escaped = false;
 
-    // Obedience meter
-    public float obedience = 100f;
+    // Escape bar
     public Image meterBar;
     public float meterAmount = 100f;
+    public float escapeTimer;
 
+    // Obedience meter
+    public float obedience = 100f;
+    
     // Update is called once per frame
     void Update(){
 
@@ -30,40 +33,45 @@ public class Student : MonoBehaviour
                 obedience = 100;
                 tryingToEscape = false;
 
-            } else {
+            } 
 
-                // Not escaping - reduce obedience meter fast
-                reduceMeter(0.05f);
-
-            }
-
-        } else {         
-            reduceMeter(0.0005f);
-        }
+        } 
 
         // Update student state
         if(!tryingToEscape){
 
-            // Not escaping, induce a chance to escape
-            randomNumber = Random.Range(0,85);
+            tryingToEscape = true;
+            escapeTimer = Random.Range(2, 4);
+            timeUntilEscape = escapeTimer;
+            
+            // // Not escaping, induce a chance to escape
+            // randomNumber = Random.Range(0,85);
 
-            // Students are more likely to escape if their obedience is low.
-            if(obedience + randomNumber < 100f){
+            // // Students are more likely to escape if their obedience is low.
+            // if(obedience + randomNumber < 100f){
 
-                // Set a timer between 5 and 10 seconds unti they escape.
-                timeUntilEscape = Random.Range(5,10);
+            //     // They're trying to escape!
+            //     tryingToEscape = true;
 
-                // Initiate running away animation here?** =======================================
-            }
+            //     // Set a timer between 5 and 10 seconds unti they escape.
+            //     escapeTimer = Random.Range(2, 4);
+            //     timeUntilEscape = escapeTimer;
+
+            //     // Initiate running away animation here?** =======================================
+            // }
 
         } else {
 
             // Decrement time remaining until escape
             timeUntilEscape -= Time.deltaTime;
 
+            timeUntilEscape = Mathf.Clamp(timeUntilEscape, 0, 100);
+            meterBar.fillAmount = timeUntilEscape / escapeTimer;
+
             // If no time left, the student escapes
             if(timeUntilEscape <= 0){
                 escaped = true;
+                Destroy(gameObject);
             }
 
         }

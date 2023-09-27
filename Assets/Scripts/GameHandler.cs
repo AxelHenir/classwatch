@@ -155,9 +155,11 @@ public class GameHandler : MonoBehaviour
                 // TY Chat GPT <3
                 foreach (var prefab in students){
 
+                    /**
                     if (prefab.escaped){ 
                         escapedStudents++;
                     }
+                    **/
 
                     Destroy(prefab);
                 }
