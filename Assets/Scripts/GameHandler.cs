@@ -113,15 +113,16 @@ public class GameHandler : MonoBehaviour
             lessonRemaining = lessonLengthSeconds; 
             lessonRateMultiplier = baseLessonRate;
 
-            // Spawn a grid of students
-            for (int i = 3; i > 0; i--){
-                for(int j = 3; j > 0; j--){
-                    Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-10);
-                    GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
-                    students.Add(newStudent);
-                }
-            }
-            
+            // // Spawn a grid of students
+            // for (int i = 3; i > 0; i--){
+            //     for(int j = 3; j > 0; j--){
+            //         Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-10);
+            //         GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
+            //         students.Add(newStudent);
+            //     }
+            // }
+            Vector3 spawnSpot = new Vector3(-10,0,-10);
+            GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
 
         }
     }

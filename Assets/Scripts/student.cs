@@ -32,6 +32,9 @@ public class Student : MonoBehaviour
     // Update is called once per frame
     void Update(){
 
+
+        
+
         // Check button state
         if (Input.GetKey("space")){
 
@@ -39,14 +42,9 @@ public class Student : MonoBehaviour
             if (tryingToEscape){
 
                 // Caught! - reset obedience and bool
-                obedience = 100;
                 tryingToEscape = false;
 
             } 
-
-            else {
-                obedience -= 0.005f;
-            }
 
         } 
 
@@ -57,21 +55,6 @@ public class Student : MonoBehaviour
             escapeTimer = Random.Range(2, 6);
             timeUntilEscape = escapeTimer;
             
-            // // Not escaping, induce a chance to escape
-            // randomNumber = Random.Range(0,85);
-
-            // // Students are more likely to escape if their obedience is low.
-            // if(obedience + randomNumber < 100f){
-
-            //     // They're trying to escape!
-            //     tryingToEscape = true;
-
-            //     // Set a timer between 5 and 10 seconds unti they escape.
-            //     escapeTimer = Random.Range(2, 4);
-            //     timeUntilEscape = escapeTimer;
-
-            //     // Initiate running away animation here?** =======================================
-            // }
 
         } else {
 
