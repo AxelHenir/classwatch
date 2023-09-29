@@ -511,6 +511,11 @@ MonoBehaviour:
   timeUntilEscaping: 0
   timeUntilEscaped: 0
   state: IDLE
+  spawnSpot: {fileID: 0}
+  studentPos: {fileID: 9135107723410863909}
+  limitFront: 0
+  limitDoor: 0
+  moveSpeed: 1
   meterBar: {fileID: 7122058484943221527}
   meterTotal: 0
   meterCanvas: {fileID: 1537590324903086674}

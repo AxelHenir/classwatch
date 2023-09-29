@@ -48,7 +48,7 @@ public class GameHandler : MonoBehaviour
     Animator _animator;
 
     public GameObject profImage;
-   
+
 
 // ============================================================
 
@@ -91,7 +91,7 @@ public class GameHandler : MonoBehaviour
     }  
 
     void intro(){
-        scoreTEXT.text = ("Controls - space to watch class");
+       // scoreTEXT.text = ("Controls - space to watch class");
         announcementTEXT.text = ("Intro - Press Space to begin");
         if (Input.GetKey("space")){
             state = "COUNTDOWN";
@@ -116,7 +116,7 @@ public class GameHandler : MonoBehaviour
             // Spawn a grid of students
             for (int i = 1; i > 0; i--){
                 for(int j = 1; j > 0; j--){
-                    Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-10);
+                    Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-3);
                     GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
                     students.Add(newStudent);
                 }
