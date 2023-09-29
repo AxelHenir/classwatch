@@ -28,9 +28,9 @@ public class newstudent : MonoBehaviour
     void Start() {
         _animator = gameObject.GetComponent<Animator>();
 
-        timeUntilPacking = Random.Range(2.0f, 16.0f);
+        timeUntilPacking = Random.Range(2.0f, 7.0f);
 
-        //meterCanvas.enabled = false;
+        meterCanvas.enabled = false;
     }
 
     void Update(){
@@ -62,9 +62,9 @@ public class newstudent : MonoBehaviour
             timeUntilPacking -= Time.deltaTime;
             if(timeUntilPacking <= 0f){
                 // Initiate packing sequence when timer expires
-                meterTotal = Random.Range(2.0f, 6.0f);
-                timeUntilEscaped = meterTotal;
                 meterCanvas.enabled = true;
+                meterTotal = Random.Range(2.0f, 6.0f);
+                timeUntilEscaping = meterTotal;
                 state = "PACKING";
             }
         }
@@ -74,7 +74,7 @@ public class newstudent : MonoBehaviour
     void packing(){
         // If space is being held down, refill the meter to full
         if (Input.GetKey("space")){
-            timeUntilEscaped = meterTotal;
+            timeUntilEscaping = meterTotal;
             setMeter();
         } else {
             // If space is not held, reduce timer until escape 
@@ -97,8 +97,8 @@ public class newstudent : MonoBehaviour
 
     // Handles meter operations
     void setMeter(){
-        timeUntilEscaped = Mathf.Clamp(timeUntilEscaped, 0f, meterTotal);
-        meterBar.fillAmount = timeUntilEscaped / meterTotal;
+        timeUntilEscaping = Mathf.Clamp(timeUntilEscaping, 0f, meterTotal);
+        meterBar.fillAmount = timeUntilEscaping / meterTotal;
     }
 
 
