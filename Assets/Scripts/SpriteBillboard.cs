@@ -18,6 +18,12 @@ public class SpriteBillboard : MonoBehaviour
         } else {
             transform.rotation = Camera.main.transform.rotation;
         }
+
+        if (Input.GetKey("space")){
+            SetSprite(1);
+        } else {
+            SetSprite(0);
+        }
         
     }
 
