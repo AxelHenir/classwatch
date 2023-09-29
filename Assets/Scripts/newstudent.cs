@@ -82,6 +82,7 @@ public class newstudent : MonoBehaviour
             setMeter();
             if(timeUntilEscaping <= 0f){
                 // Initiate escaping sequence when meter is gone
+                
                 meterCanvas.enabled = false;
                 state = "ESCAPING";
             }
