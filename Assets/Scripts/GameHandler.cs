@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameHandler : MonoBehaviour
 {
     // Game state
-    // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCENE_OUTRO , SCORE_SCREEN
+    // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCORE_SCREEN
     public string state = "SCENE_INTRO";
     
     // Debug UI
@@ -37,12 +37,18 @@ public class GameHandler : MonoBehaviour
     public int roundLengthSeconds = 30; 
     public bool paused = false;
 
-    public GameObject studentPrefab;
+    public GameObject studentPrefabFemale;
+    public GameObject studentPrefabMale;
     public List<GameObject> students = new List<GameObject>();
 
     // Scoring
-    public int score = 0;
-    public int escapedStudents = 0;
+    private int score = 0;
+    private int escapedStudents;
+    public int lostPointsPerStudent;
+    private int pointsPerLessonPercent = 100;
+
+    private string scoreBreakdownText;
+    public int sessionHighScore;
 
     // Animation
     Animator _animator;
@@ -81,9 +87,6 @@ public class GameHandler : MonoBehaviour
         case "FINISH":
             finish();
             break;
-        case "SCENE_OUTRO":
-            outro();
-            break;
         case "SCORE_SCREEN":
             scoreScreen();
             break;
@@ -114,14 +117,22 @@ public class GameHandler : MonoBehaviour
             lessonRateMultiplier = baseLessonRate;
 
             // Spawn a grid of students
-            for (int i = 1; i > 0; i--){
-                for(int j = 1; j > 0; j--){
-                    Vector3 spawnSpot = new Vector3(4*i-10,0,4*j-3);
-                    GameObject newStudent = Instantiate(studentPrefab, spawnSpot, Quaternion.identity);
-                    students.Add(newStudent);
+            for (int i = 3; i > 0; i--){
+                for(int j = 3; j > 0; j--){
+                    
+                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-5);
+                    var random = Random.Range(-10,10);
+                    if(random > 0){
+
+                        GameObject newStudent = Instantiate(studentPrefabFemale, spawnSpot, Quaternion.identity);
+                        students.Add(newStudent);
+
+                    } else {
+                        GameObject newStudent = Instantiate(studentPrefabMale, spawnSpot, Quaternion.identity);
+                        students.Add(newStudent);
+                    }
                 }
             }
-
         }
     }
 
@@ -169,20 +180,32 @@ public class GameHandler : MonoBehaviour
                 state = "FINISH";
                 timeRemaining = countdownLength;
 
-                // TY Chat GPT <3
+                calculateScore();
+
                 foreach (var prefab in students){
-
-                    /**
-                    if (prefab.escaped){ 
-                        escapedStudents++;
-                    }
-                    **/
-
                     Destroy(prefab);
                 }
                 students.Clear();
             }
         }
+    }
+
+    void calculateScore(){
+
+        escapedStudents = 0;
+        foreach (var prefab in students){
+            if(prefab == null){
+                escapedStudents++;
+            }
+        }
+
+        // Calculate the score
+        int lessonCompleted = 100 - Mathf.CeilToInt(lessonRemaining);
+        int escapedStudentsScore = (-1)*(lostPointsPerStudent)*(escapedStudents);
+        int lessonCompletionScore = lessonCompleted * pointsPerLessonPercent;
+        score = lessonCompletionScore + escapedStudentsScore;
+
+        scoreBreakdownText = $"Lesson completed: {lessonCompleted}% x {pointsPerLessonPercent} = {lessonCompletionScore} <br> Escaped Students: {escapedStudents} x -{lostPointsPerStudent} = {escapedStudentsScore} <br> Final score: {score}";
     }
 
     void finish(){
@@ -193,25 +216,14 @@ public class GameHandler : MonoBehaviour
             timeRemainingTEXT.text = timeRemaining.ToString("0");
 
         } else {
-            state = "SCENE_OUTRO";
+            state = "SCORE_SCREEN";
         }
     }
 
-    void outro(){
-        announcementTEXT.text = ("Outro - Press Space to continue");
-        if (Input.GetKey("space")){
-            state = "SCORE_SCREEN";
-
-            // Calculate the score
-            int lessonCompleted = 100 - Mathf.CeilToInt(lessonRemaining);
-            score = (lessonCompleted * 1000) + (-200 * escapedStudents);
-        } 
-    }
-
     void scoreScreen(){
-        announcementTEXT.text = ("Press enter to Restart");
-        scoreTEXT.text = ("FINAL SCORE: " + score);
-        if (Input.GetKey("return")){
+        announcementTEXT.text = ("Press Space to Restart");
+        scoreTEXT.text = scoreBreakdownText;
+        if (Input.GetKey("space")){
             state = "SCENE_INTRO";
             scoreTEXT.text = ("");
         }

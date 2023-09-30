@@ -123,37 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &8925567
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8925568}
-  m_Layer: 0
-  m_Name: Movement pips
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8925568
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8925567}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &40969897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1986,13 +1955,14 @@ MonoBehaviour:
   baseLessonPerTick: 0.0005
   lessonRateMultiplier: 0
   lessonMultiplierGrowth: 0.00025
-  countdownLength: 2
-  roundLengthSeconds: 15
+  countdownLength: 3
+  roundLengthSeconds: 45
   paused: 0
-  studentPrefab: {fileID: 7696918666305390789, guid: ca99cc0ec0bd3b94d8fe6dbf3f97f614, type: 3}
+  studentPrefabFemale: {fileID: 7696918666305390789, guid: ca99cc0ec0bd3b94d8fe6dbf3f97f614, type: 3}
+  studentPrefabMale: {fileID: 2435048453701121350, guid: e3dca37766f74dd458744b62b86afabf, type: 3}
   students: []
-  score: 0
-  escapedStudents: 0
+  lostPointsPerStudent: 200
+  sessionHighScore: 0
   profImage: {fileID: 744436487}
 --- !u!4 &1566651243
 Transform:
@@ -2567,4 +2537,3 @@ SceneRoots:
   - {fileID: 1566651243}
   - {fileID: 1365155499362633711}
   - {fileID: 7302781778329837301}
-  - {fileID: 8925568}

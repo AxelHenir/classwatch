@@ -1,77 +1,163 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
-
-public class Student : MonoBehaviour
+public class student : MonoBehaviour
 {
-    // escaping tracker
-    public bool tryingToEscape = false;
-    public float timeUntilEscape;
-    float randomNumber;
-    public bool escaped = false;
+    // Timer data and state tracking
+    public float timeUntilPacking;
+    public float timeUntilEscaping;
+    public float timeUntilEscaped;
 
-    // Escape bar
+    // State - IDLE PACKING ESCAPING
+    public string state = "IDLE";
+
+    // Movement
+    public float deskPosX;
+    public float deskPosZ;
+    public Transform studentPos;
+    public float limitFront = 0f;
+    public float limitDoor = 0f;
+
+    public float moveSpeed = 1f;
+
+    // Meter bar
     public Image meterBar;
-    public float meterAmount = 100f;
-    public float escapeTimer;
+    public float meterTotal;
+    public Canvas meterCanvas;
 
-    // Escape meter
-    public Canvas canvas;
-    public float obedience = 100f;
+    //DEBUG
+    public TMP_Text debugText;
 
     Animator _animator;
 
-    
-    // Start is called before the first frame update
+
     void Start() {
         _animator = gameObject.GetComponent<Animator>();
+
+        timeUntilPacking = Random.Range(2.0f, 3.0f);
+
+        meterCanvas.enabled = false;
     }
-    
-    // Update is called once per frame
+
     void Update(){
 
+        debugText.text = state;
 
-        
+        // Call the state's update method
+        switch (state){
+        case "IDLE":
+            idle();
+            break;
+        case "PACKING":
+            packing();
+            break;
+        case "ESCAPING":
+            escaping();
+            break;
+        }
+    }
 
-        // Check button state
+    // Handles idle behavior
+    void idle(){
+
+        // If space is being held down, freeze
         if (Input.GetKey("space")){
 
-            // Escaping?
-            if (tryingToEscape){
-
-                // Caught! - reset obedience and bool
-                tryingToEscape = false;
-
-            } 
-
-        } 
-
-        // Update student state
-        if(!tryingToEscape){
-
-            tryingToEscape = true;
-            escapeTimer = Random.Range(2, 6);
-            timeUntilEscape = escapeTimer;
-            
-
         } else {
+            // Reduce hidden timer until meter appears (3 - 10 sec.)
+            timeUntilPacking -= Time.deltaTime;
+            if(timeUntilPacking <= 0f){
+                // Initiate packing sequence when timer expires
+                meterCanvas.enabled = true;
+                meterTotal = Random.Range(2.0f, 3.0f);
+                timeUntilEscaping = meterTotal;
+                state = "PACKING";
+            }
+        }
+    }
 
-            // Decrement time remaining until escape
-            timeUntilEscape -= Time.deltaTime;
+    // Handles packing behavior
+    void packing(){
+        // If space is being held down, refill the meter to full
+        if (Input.GetKey("space")){
+            timeUntilEscaping = meterTotal;
+            setMeter();
+        } else {
+            // If space is not held, reduce timer until escape 
+            timeUntilEscaping -= Time.deltaTime;
+            setMeter();
+            if(timeUntilEscaping <= 0f){
+                // Initiate escaping sequence when meter is gone
+                
+                deskPosX = studentPos.position.x; 
+                deskPosZ = studentPos.position.z;
+                meterCanvas.enabled = false;
+                state = "ESCAPING";
+            }
+        }
+    }
 
-            timeUntilEscape = Mathf.Clamp(timeUntilEscape, 0, 100);
-            meterBar.fillAmount = timeUntilEscape / escapeTimer;
+    // Handles escaping behavior
+    void escaping(){
 
-            // If no time left, the student escapes
-            if(timeUntilEscape <= 0){
-                escaped = true;
-                Destroy(gameObject);
+        // Escaping is broken into 2 parts, walking forward then walking to the door
+
+        // If prof is watching
+        if (Input.GetKey("space")){
+
+            // If student hasnt reached front of class, move left
+            if(studentPos.position.x < limitFront){
+                
+                studentPos.position = new Vector3(studentPos.position.x - (moveSpeed * Time.deltaTime), studentPos.position.y, studentPos.position.z );
+
+                if(studentPos.position.x <= deskPosX){
+                    // If they are sent back to their seat, set them back to packing
+                meterCanvas.enabled = true;
+                meterTotal = Random.Range(2.0f, 3.0f);
+                timeUntilEscaping = meterTotal;
+                state = "PACKING";
+                }
+                
+            } 
+            // If student has front of class but hasnt reached door, move up
+            else if(studentPos.position.z > limitDoor){
+
+                studentPos.position = new Vector3(studentPos.position.x, studentPos.position.y, studentPos.position.z + (moveSpeed * Time.deltaTime));
+
+                if(studentPos.position.z > deskPosZ){
+                    studentPos.position = new Vector3(studentPos.position.x - (moveSpeed * Time.deltaTime), studentPos.position.y, studentPos.position.z );
+                }
+
             }
 
-        }
+        // If Prof is not watching
+        } else {
 
+            // If student hasnt reached front of class, move right
+            if(studentPos.position.x < limitFront){
+                
+                studentPos.position = new Vector3(studentPos.position.x + (moveSpeed * Time.deltaTime), studentPos.position.y, studentPos.position.z );
+            } 
+            // If student has reached front of class but hasnt reached door, move down
+            else if(studentPos.position.z > limitDoor){
+                studentPos.position = new Vector3(studentPos.position.x, studentPos.position.y, studentPos.position.z - (moveSpeed * Time.deltaTime));
+            }
+            // If student has reached front of class and out the door, the escape!
+            else{
+                Destroy(gameObject);
+            }
+        }
+        
     }
-    
+
+    // Handles meter operations
+    void setMeter(){
+        timeUntilEscaping = Mathf.Clamp(timeUntilEscaping, 0f, meterTotal);
+        meterBar.fillAmount = timeUntilEscaping / meterTotal;
+    }
+
+
 }
