@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainGameSounds : MonoBehaviour
 {
+    // SOunds
     [SerializeField] private AudioSource audioSource1;
     [SerializeField] private AudioSource audioSource2;
     [SerializeField] private AudioSource audioSource3;

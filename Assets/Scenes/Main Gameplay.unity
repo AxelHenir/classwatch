@@ -3553,9 +3553,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1566651244}
         m_TargetAssemblyTypeName: MenuHandler, Assembly-CSharp
-        m_MethodName: creditScreen
+        m_MethodName: quitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6383,7 +6383,7 @@ MonoBehaviour:
   studentPrefabFemale: {fileID: 7696918666305390789, guid: ca99cc0ec0bd3b94d8fe6dbf3f97f614, type: 3}
   studentPrefabMale: {fileID: 2435048453701121350, guid: e3dca37766f74dd458744b62b86afabf, type: 3}
   students: []
-  lostPointsPerStudent: 0
+  lostPointsPerStudent: 2000
   sessionHighScore: 0
   profImage: {fileID: 744436487}
 --- !u!4 &1566651243
@@ -8290,6 +8290,22 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2880058542025322859, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880058542025322859, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880058542025322859, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880058542025322859, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4086656431402451353, guid: f6e538b94f6750141b5d1cec30058853, type: 3}
       propertyPath: m_RootOrder
       value: 4
