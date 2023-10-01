@@ -113,6 +113,8 @@ public class GameHandler : MonoBehaviour
             timeRemainingTEXT.text = timeRemaining.ToString("0");
 
         } else {
+
+            // Setup for gameplay
             state = "GAMEPLAY";
             timeRemaining = roundLengthSeconds;
             lessonRemaining = lessonLengthSeconds; 
@@ -123,6 +125,8 @@ public class GameHandler : MonoBehaviour
                 for(int j = 3; j > 0; j--){
                     
                     Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-5);
+
+                    // 50/50 to spawn M or F student
                     var random = Random.Range(-10,10);
                     if(random > 0){
 
@@ -140,24 +144,50 @@ public class GameHandler : MonoBehaviour
 
     void gameplay(){
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
-
-        clockTime.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
-
+        
         timeRemainingTEXT.text = "";
         
-        // Check if paused
-        if (paused){
+        announcementTEXT.text = ("");
 
-            announcementTEXT.text = ("Paused");
+        // While there is time in the round,
+        if (timeRemaining >= 0){
 
+            // Remove time
+            timeRemaining -= Time.deltaTime;
+
+            // Update timer visual
+            clockTime.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
+
+            // Check space being held down
+            if (Input.GetKey("space")){
+
+                // Turn prof
+                _animator.SetBool("isTurning", true);
+
+                // Reset lesson multiplier :(
+                lessonRateMultiplier = baseLessonRate;
+
+            } else {
+
+                _animator.SetBool("isTurning", false);
+                    
+                lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
+                lessonRateMultiplier += lessonMultiplierGrowth;
+
+                meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
+                //lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
+                bookshelfTime.fillAmount = meterAmount / lessonLengthSeconds;
+            }
+
+        // If there is no more time in the round  
         } else {
 
-            announcementTEXT.text = ("");
-            if (timeRemaining >= 0){
+            // Set new state
+            state = "FINISH";
+            timeRemaining = countdownLength;
 
-                // Remove time
-                timeRemaining -= Time.deltaTime;
-                // timeRemainingTEXT.text = timeRemaining.ToString("0.00");
+            // Take a guess at what this method does :)
+            calculateScore();
 
                 // Update the prof
                 if (Input.GetKey("space")){
@@ -193,9 +223,10 @@ public class GameHandler : MonoBehaviour
                 }
                 students.Clear();
             }
+            students.Clear();
         }
     }
-
+    
     void calculateScore(){
 
         escapedStudents = 0;
@@ -219,7 +250,6 @@ public class GameHandler : MonoBehaviour
         announcementTEXT.text = ("Finished!");
         if (timeRemaining >= 0){
             timeRemaining -= Time.deltaTime;
-            // timeRemainingTEXT.text = timeRemaining.ToString("0");
 
         } else {
             state = "SCORE_SCREEN";
