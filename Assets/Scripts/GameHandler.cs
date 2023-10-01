@@ -141,8 +141,11 @@ public class GameHandler : MonoBehaviour
     void gameplay(){
 
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
+
         clockTime.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
+
         timeRemainingTEXT.text = "";
+        
         // Check if paused
         if (paused){
 

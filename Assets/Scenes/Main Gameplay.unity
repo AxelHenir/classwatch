@@ -956,7 +956,6 @@ GameObject:
   m_Component:
   - component: {fileID: 875525562}
   - component: {fileID: 875525564}
-  - component: {fileID: 875525563}
   m_Layer: 5
   m_Name: Bookshelf Timer
   m_TagString: Untagged
@@ -985,20 +984,6 @@ RectTransform:
   m_AnchoredPosition: {x: 512, y: 368}
   m_SizeDelta: {x: 100, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &875525563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875525561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fa9840a42c679e449a0723e57f857d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bookshelfTime: {fileID: 1335427437}
-  time: 30
 --- !u!114 &875525564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1042,7 +1027,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1335427436}
   m_HandleRect: {fileID: 0}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -1996,7 +1981,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1371050793}
   - component: {fileID: 1371050795}
-  - component: {fileID: 1371050794}
   m_Layer: 5
   m_Name: Clock
   m_TagString: Untagged
@@ -2025,20 +2009,6 @@ RectTransform:
   m_AnchoredPosition: {x: 870, y: -457}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1371050794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371050792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fa9840a42c679e449a0723e57f857d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bookshelfTime: {fileID: 1443509475}
-  time: 5
 --- !u!114 &1371050795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2538,8 +2508,8 @@ MonoBehaviour:
   lessonRateMultiplier: 0
   lessonMultiplierGrowth: 0.00025
   countdownLength: 3
-  bookshelfTime: {fileID: 1054687791}
-  clockTime: {fileID: 133009982}
+  bookshelfTime: {fileID: 1335427437}
+  clockTime: {fileID: 1443509475}
   roundLengthSeconds: 45
   paused: 0
   studentPrefabFemale: {fileID: 7696918666305390789, guid: ca99cc0ec0bd3b94d8fe6dbf3f97f614, type: 3}
