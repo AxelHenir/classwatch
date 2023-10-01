@@ -139,7 +139,7 @@ public class GameHandler : MonoBehaviour
     }
 
     void gameplay(){
-
+        clockImg.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
 
         clockTime.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
@@ -178,7 +178,8 @@ public class GameHandler : MonoBehaviour
 
                     meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
                     lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
-                    bookshelfTime.fillAmount = meterAmount / lessonLengthSeconds;
+
+                    bookShelfImg.fillAmount += -meterAmount / lessonLengthSeconds;
                 }
 
                 
