@@ -2538,8 +2538,8 @@ MonoBehaviour:
   lessonRateMultiplier: 0
   lessonMultiplierGrowth: 0.00025
   countdownLength: 3
-  bookshelfTime: {fileID: 0}
-  clockTime: {fileID: 0}
+  bookshelfTime: {fileID: 1054687791}
+  clockTime: {fileID: 133009982}
   roundLengthSeconds: 45
   paused: 0
   studentPrefabFemale: {fileID: 7696918666305390789, guid: ca99cc0ec0bd3b94d8fe6dbf3f97f614, type: 3}
