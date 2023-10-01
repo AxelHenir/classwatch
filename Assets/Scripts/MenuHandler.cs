@@ -58,4 +58,9 @@ public class MenuHandler : MonoBehaviour
     MenuScreen[2].SetActive(true);
     TitleTEXT.text = "CREDITS";
     }
+
+    public void quitGame() {
+        Application.Quit();
+        Debug.Log("You exited the game");
+    }
 }
