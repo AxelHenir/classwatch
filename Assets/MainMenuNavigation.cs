@@ -7,7 +7,7 @@ public class MainMenuNavigation : MonoBehaviour
 {
     public void PlayGameWithDelay()
     {
-        // Invoke the LoadNextScene method after a 3-second delay
+        // Invoke the LoadNextScene method after a 2-second delay
         Invoke("LoadNextScene", 2f);
     }
 

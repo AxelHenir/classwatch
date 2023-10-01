@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class Student : MonoBehaviour
 {
+     [SerializeField]
+    private AudioSource backgroundMusic;
+
+    [SerializeField]
+    private AudioSource soundEffect;
+    
     // escaping tracker
     public bool tryingToEscape = false;
     public float timeUntilEscape;
@@ -27,6 +33,7 @@ public class Student : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         _animator = gameObject.GetComponent<Animator>();
+
     }
     
     // Update is called once per frame
@@ -87,6 +94,13 @@ public class Student : MonoBehaviour
                 Destroy(gameObject);
             }
 
+        }
+
+        // Track obedience to trigger sound
+        if (obedience <= 30) {
+            // Play the low obedience laugh sound
+           
+            Debug.Log("test");
         }
 
     }
