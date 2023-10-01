@@ -4,8 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class GameHandler : MonoBehaviour
-{
+public class GameHandler : MonoBehaviour{
     // Game state
     // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCORE_SCREEN
     public string state = "SCENE_INTRO";
@@ -143,6 +142,7 @@ public class GameHandler : MonoBehaviour
     }
 
     void gameplay(){
+
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
         
         timeRemainingTEXT.text = "";
@@ -189,44 +189,13 @@ public class GameHandler : MonoBehaviour
             // Take a guess at what this method does :)
             calculateScore();
 
-                // Update the prof
-                if (Input.GetKey("space")){
-
-                    // Turn prof
-                    _animator.SetBool("isTurning", true);
-
-                    lessonRateMultiplier = baseLessonRate;
-                    //print("THE PROF IS WATCHING");
-
-                } else {
-
-                    _animator.SetBool("isTurning", false);
-                    
-                    lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
-                    lessonRateMultiplier += lessonMultiplierGrowth;
-
-                    meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
-                    lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
-
-                    bookshelfTime.fillAmount += -meterAmount / lessonLengthSeconds;
-                }
-
-                
-            } else {
-                state = "FINISH";
-                timeRemaining = countdownLength;
-
-                calculateScore();
-
-                foreach (var prefab in students){
-                    Destroy(prefab);
-                }
-                students.Clear();
+            foreach (var prefab in students){
+                Destroy(prefab);
             }
             students.Clear();
         }
     }
-    
+
     void calculateScore(){
 
         escapedStudents = 0;
@@ -264,7 +233,6 @@ public class GameHandler : MonoBehaviour
             scoreTEXT.text = ("");
         }
     }
-
 }
 
 
