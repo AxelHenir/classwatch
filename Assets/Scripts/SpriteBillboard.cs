@@ -10,6 +10,10 @@ public class SpriteBillboard : MonoBehaviour
     public Sprite[] sprites;
     public SpriteRenderer spriteRenderer;
 
+    void Start() {
+        GetComponent<SpriteRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+    }
+
     void Update()
     {
         
