@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class student : MonoBehaviour
+public class newStudent : MonoBehaviour
 {
     // Timer data and state tracking
     public float timeUntilPacking;
