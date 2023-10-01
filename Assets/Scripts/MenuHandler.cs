@@ -14,6 +14,7 @@ public class MenuHandler : MonoBehaviour
 
     public GameObject[] MenuScreen;
     public TMP_Text TitleTEXT;
+    private Vector3 offset;
     // Update is called once per frame
     
     void Start() {
@@ -34,7 +35,7 @@ public class MenuHandler : MonoBehaviour
         soundPlayer.Play();
         MenuHUD.SetActive(false);
         ProfImg.GetComponent<SpriteRenderer>().flipX = false;
-        Prof.transform.position = new Vector3(Prof.transform.position.x, Prof.transform.position.y, 1.46f);
+        Prof.transform.position = new Vector3(Prof.transform.position.x, Prof.transform.position.y, 7.13f);
     }
 
     public void instructionScreen() {
