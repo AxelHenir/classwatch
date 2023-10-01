@@ -32,6 +32,8 @@ public class GameHandler : MonoBehaviour
     // Countdown
     public int countdownLength = 3;
     float timeRemaining;
+    public Image bookshelfTime;
+    public Image clockTime;
 
     // Gameplay
     public int roundLengthSeconds = 30; 
@@ -139,7 +141,8 @@ public class GameHandler : MonoBehaviour
     void gameplay(){
 
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
-
+        clockTime.fillAmount += 1.0f / roundLengthSeconds * Time.deltaTime;
+        timeRemainingTEXT.text = "";
         // Check if paused
         if (paused){
 
@@ -152,7 +155,7 @@ public class GameHandler : MonoBehaviour
 
                 // Remove time
                 timeRemaining -= Time.deltaTime;
-                timeRemainingTEXT.text = timeRemaining.ToString("0.00");
+                // timeRemainingTEXT.text = timeRemaining.ToString("0.00");
 
                 // Update the prof
                 if (Input.GetKey("space")){
@@ -172,7 +175,7 @@ public class GameHandler : MonoBehaviour
 
                     meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
                     lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
-
+                    bookshelfTime.fillAmount = meterAmount / lessonLengthSeconds;
                 }
 
                 
@@ -213,7 +216,7 @@ public class GameHandler : MonoBehaviour
         announcementTEXT.text = ("Finished!");
         if (timeRemaining >= 0){
             timeRemaining -= Time.deltaTime;
-            timeRemainingTEXT.text = timeRemaining.ToString("0");
+            // timeRemainingTEXT.text = timeRemaining.ToString("0");
 
         } else {
             state = "SCORE_SCREEN";
