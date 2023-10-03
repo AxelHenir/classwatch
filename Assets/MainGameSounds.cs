@@ -14,7 +14,7 @@ public class MainGameSounds : MonoBehaviour
 
     private string currentState; // Declare currentState at the class level
     private GameHandler gameHandler;
-    private float countdownDelay = 0.85f; // Set the delay time in seconds
+    private float countdownDelay = 1f; // Set the delay time in seconds
     private float countdownTimer;
 
     private void Start()
