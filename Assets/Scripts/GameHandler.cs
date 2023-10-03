@@ -52,6 +52,7 @@ public class GameHandler : MonoBehaviour{
 
     private string scoreBreakdownText;
     public int sessionHighScore;
+    public Animator cameraAnimator;
 
     // Animation
     Animator _animator;
@@ -134,7 +135,7 @@ public class GameHandler : MonoBehaviour{
             for (int i = 3; i > 0; i--){
                 for(int j = 3; j > 0; j--){
                     
-                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-5); // don't touch the magic numbers ;)
+                    Vector3 spawnSpot = new Vector3(4*i-16,1,4*j-5); // don't touch the magic numbers ;)
 
                     // 50/50 to spawn M or F student
                     var random = Random.Range(-10,10);
@@ -243,12 +244,13 @@ public class GameHandler : MonoBehaviour{
     }
 
     void scoreScreen(){
-
+        cameraAnimator.SetBool("Score", true);
         announcementTEXT.text = ("Press Space to Restart");
 
         scoreTEXT.text = scoreBreakdownText;
 
         if (Input.GetKey("space")){
+            cameraAnimator.SetBool("Score", false);
             state = "COUNTDOWN";
             scoreTEXT.text = "";
         }
