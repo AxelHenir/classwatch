@@ -35,7 +35,8 @@ public class newStudent : MonoBehaviour
 
 
     void Start() {
-        _animator = gameObject.GetComponent<Animator>();
+
+        _animator = gameObject.GetComponentInChildren<Animator>();
 
         timeUntilPacking = Random.Range(2.0f, 3.0f);
 
@@ -113,6 +114,9 @@ public class newStudent : MonoBehaviour
                 
                 studentPos.position = new Vector3(studentPos.position.x - (moveSpeed * Time.deltaTime), studentPos.position.y, studentPos.position.z );
 
+                _animator.SetBool("isWalking", true); // walking on the side
+                _animator.SetBool("isWalkingStraight", false); //walking Straight
+
                 if(studentPos.position.x <= deskPosX){
                     // If they are sent back to their seat, set them back to packing
                 meterCanvas.enabled = true;
@@ -127,8 +131,15 @@ public class newStudent : MonoBehaviour
 
                 studentPos.position = new Vector3(studentPos.position.x, studentPos.position.y, studentPos.position.z + (moveSpeed * Time.deltaTime));
 
+                _animator.SetBool("isWalking", true); // walking on the side
+                _animator.SetBool("isWalkingStraight", true); //walking Straight
+
                 if(studentPos.position.z > deskPosZ){
                     studentPos.position = new Vector3(studentPos.position.x - (moveSpeed * Time.deltaTime), studentPos.position.y, studentPos.position.z );
+
+                    // Disable walking animations
+                    _animator.SetBool("isWalking", false);
+                    _animator.SetBool("isWalkingStraight", false);
                 }
 
             }
@@ -140,10 +151,19 @@ public class newStudent : MonoBehaviour
             if(studentPos.position.x < limitFront){
                 
                 studentPos.position = new Vector3(studentPos.position.x + (moveSpeed * Time.deltaTime), studentPos.position.y, studentPos.position.z );
+
+                _animator.SetBool("isWalking", true); // walking on the side
+                _animator.SetBool("isWalkingStraight", false); //walking Straight
+
             } 
             // If student has reached front of class but hasnt reached door, move down
             else if(studentPos.position.z > limitDoor){
+
                 studentPos.position = new Vector3(studentPos.position.x, studentPos.position.y, studentPos.position.z - (moveSpeed * Time.deltaTime));
+
+                _animator.SetBool("isWalking", true); // walking on the side
+                _animator.SetBool("isWalkingStraight", true); //walking Straight
+
             }
             // If student has reached front of class and out the door, the escape!
             else{
@@ -157,6 +177,10 @@ public class newStudent : MonoBehaviour
     void setMeter(){
         timeUntilEscaping = Mathf.Clamp(timeUntilEscaping, 0f, meterTotal);
         meterBar.fillAmount = timeUntilEscaping / meterTotal;
+    }
+
+    void handleAnimation(){
+
     }
 
 

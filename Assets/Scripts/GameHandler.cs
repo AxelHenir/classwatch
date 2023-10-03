@@ -55,7 +55,7 @@ public class GameHandler : MonoBehaviour{
     public Animator cameraAnimator;
 
     // Animation
-    Animator _animator;
+    Animator prof_animator;
 
     public GameObject profImage;
 
@@ -64,7 +64,7 @@ public class GameHandler : MonoBehaviour{
 
     // Start is called before the first frame update
     public void Start(){
-        _animator = profImage.GetComponent<Animator>();
+        prof_animator = profImage.GetComponent<Animator>();
         gameplayUICanvas.enabled = false;
     }
 
@@ -174,14 +174,14 @@ public class GameHandler : MonoBehaviour{
             if (Input.GetKey("space")){
 
                 // Turn prof
-                _animator.SetBool("isTurning", true);
+                prof_animator.SetBool("isTurning", true);
 
                 // Reset lesson multiplier :(
                 lessonRateMultiplier = baseLessonRate;
 
             } else {
 
-                _animator.SetBool("isTurning", false);
+                prof_animator.SetBool("isTurning", false);
                     
                 lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
                 lessonRateMultiplier += lessonMultiplierGrowth;
