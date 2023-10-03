@@ -20,25 +20,20 @@ public class GameHandler : MonoBehaviour{
     // Lesson (level length, difficulty)
     public float lessonLengthSeconds = 25;
     public float lessonRemaining;
+    public float lessonRateMultiplier;
     public Image lessonBar;
     public float meterAmount = 100f;
-
-    public float baseLessonRate = 1.0f;
-    public float baseLessonPerTick = 0.005f;
-    public float lessonRateMultiplier;
-    public float lessonMultiplierGrowth = 0.005f;
 
     // Countdown
     public int countdownLength = 3;
     float timeRemaining;
-    public Image bookshelfTime;
+    public Slider bookshelfTime;
     public Image clockTime;
 
     // Gameplay
 
     public Canvas gameplayUICanvas;
     public int roundLengthSeconds = 30; 
-    public bool paused = false;
 
     public GameObject studentPrefabFemale;
     public GameObject studentPrefabMale;
@@ -128,7 +123,7 @@ public class GameHandler : MonoBehaviour{
             state = "GAMEPLAY";
             timeRemaining = roundLengthSeconds;
             lessonRemaining = lessonLengthSeconds; 
-            lessonRateMultiplier = baseLessonRate;
+            lessonRateMultiplier = 1f;
             
 
             // Spawn a grid of students
@@ -157,6 +152,7 @@ public class GameHandler : MonoBehaviour{
 
     void gameplay(){
 
+        // Update multiplier text
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
         
         announcementTEXT.text = "";
@@ -177,17 +173,17 @@ public class GameHandler : MonoBehaviour{
                 prof_animator.SetBool("isTurning", true);
 
                 // Reset lesson multiplier :(
-                lessonRateMultiplier = baseLessonRate;
+                lessonRateMultiplier = 1f;
 
             } else {
 
                 prof_animator.SetBool("isTurning", false);
-                    
-                lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
-                lessonRateMultiplier += lessonMultiplierGrowth;
 
-                meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
-                bookshelfTime.fillAmount = meterAmount / lessonLengthSeconds;
+                  
+                lessonRemaining -= Time.deltaTime * lessonRateMultiplier;
+                lessonRateMultiplier += 0.2f * Time.deltaTime;
+
+                bookshelfTime.SetValueWithoutNotify((lessonLengthSeconds-lessonRemaining)/lessonLengthSeconds);
             }
 
         // If there is no more time in the round  
