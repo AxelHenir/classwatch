@@ -21,8 +21,6 @@ public class GameHandler : MonoBehaviour{
     public float lessonLengthSeconds = 25;
     public float lessonRemaining;
     public float lessonRateMultiplier;
-    public Image lessonBar;
-    public float meterAmount = 100f;
 
     // Countdown
     public int countdownLength = 3;
@@ -130,10 +128,10 @@ public class GameHandler : MonoBehaviour{
             for (int i = 3; i > 0; i--){
                 for(int j = 3; j > 0; j--){
                     
-                    Vector3 spawnSpot = new Vector3(4*i-16,1,4*j-5); // don't touch the magic numbers ;)
+                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-1); // don't touch the magic numbers ;)
 
                     // 50/50 to spawn M or F student
-                    var random = Random.Range(-10,10);
+                    var random = Random.Range(-100,100);
                     if(random > 0){
 
                         GameObject newStudent = Instantiate(studentPrefabFemale, spawnSpot, Quaternion.identity);
@@ -181,7 +179,7 @@ public class GameHandler : MonoBehaviour{
 
                   
                 lessonRemaining -= Time.deltaTime * lessonRateMultiplier;
-                lessonRateMultiplier += 0.2f * Time.deltaTime;
+                lessonRateMultiplier += 0.15f * Time.deltaTime;
 
                 bookshelfTime.SetValueWithoutNotify((lessonLengthSeconds-lessonRemaining)/lessonLengthSeconds);
             }
@@ -234,21 +232,26 @@ public class GameHandler : MonoBehaviour{
         } else {
             state = "SCORE_SCREEN";
 
+             clockTime.fillAmount = 0f;
+
             // Disable gameplay UI
-            //gameplayUICanvas.enabled = false;
+            gameplayUICanvas.enabled = false;
         }
     }
 
     void scoreScreen(){
+
         cameraAnimator.SetBool("Score", true);
         announcementTEXT.text = ("Press Space to Restart");
 
         scoreTEXT.text = scoreBreakdownText;
 
         if (Input.GetKey("space")){
+
             cameraAnimator.SetBool("Score", false);
-            state = "COUNTDOWN";
             scoreTEXT.text = "";
+            restartGame();
+
         }
     }
 }
