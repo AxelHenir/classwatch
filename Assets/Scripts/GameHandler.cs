@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour{
     // Game state
-    // SCENE_INTRO , COUNTDOWN , GAMEPLAY , TIMER_EXPIRE , SCORE_SCREEN
-    public string state = "SCENE_INTRO";
+    // MAINMENU , COUNTDOWN , GAMEPLAY , FINISH , SCORE_SCREEN
+    public string state = "MAINMENU";
     
     // Debug UI
     public bool  debugUI;
@@ -20,23 +20,18 @@ public class GameHandler : MonoBehaviour{
     // Lesson (level length, difficulty)
     public float lessonLengthSeconds = 25;
     public float lessonRemaining;
-    public Image lessonBar;
-    public float meterAmount = 100f;
-
-    public float baseLessonRate = 1.0f;
-    public float baseLessonPerTick = 0.005f;
     public float lessonRateMultiplier;
-    public float lessonMultiplierGrowth = 0.005f;
 
     // Countdown
     public int countdownLength = 3;
-    public float timeRemaining;
-    public Image bookshelfTime;
+    float timeRemaining;
+    public Slider bookshelfTime;
     public Image clockTime;
 
     // Gameplay
+
+    public Canvas gameplayUICanvas;
     public int roundLengthSeconds = 30; 
-    public bool paused = false;
 
     public GameObject studentPrefabFemale;
     public GameObject studentPrefabMale;
@@ -50,9 +45,10 @@ public class GameHandler : MonoBehaviour{
 
     private string scoreBreakdownText;
     public int sessionHighScore;
+    public Animator cameraAnimator;
 
     // Animation
-    Animator _animator;
+    Animator prof_animator;
 
     public GameObject profImage;
 
@@ -60,11 +56,12 @@ public class GameHandler : MonoBehaviour{
 // ============================================================
 
     // Start is called before the first frame update
-    void Start(){
-        _animator = profImage.GetComponent<Animator>();
+    public void Start(){
+        prof_animator = profImage.GetComponent<Animator>();
+        gameplayUICanvas.enabled = false;
     }
 
-    void Update(){
+    public void Update(){
 
         // Debug UI
         if (debugUI){
@@ -74,67 +71,77 @@ public class GameHandler : MonoBehaviour{
         }
 
         // Call the state's update method
-        switch (state)
-        {
-        case "SCENE_INTRO":
-            intro();
-            break;
-        case "COUNTDOWN":
-            countdown();
-            break;
-        case "GAMEPLAY":
-            gameplay();
-            break;
-        case "FINISH":
-            finish();
-            break;
-        case "SCORE_SCREEN":
-            scoreScreen();
-            break;
+        switch (state){
+            case "MAIN_MENU":
+                break;
+            case "COUNTDOWN":
+                countdown();
+                break;
+            case "GAMEPLAY":
+                gameplay();
+                break;
+            case "FINISH":
+                finish();
+                break;
+            case "SCORE_SCREEN":
+                scoreScreen();
+                break;
         }
     }  
 
-    void intro(){
-       // scoreTEXT.text = ("Controls - space to watch class");
-        announcementTEXT.text = ("Intro - Press Space to begin");
-        if (Input.GetKey("space")){
-            state = "COUNTDOWN";
-            scoreTEXT.text = ("");
-            timeRemaining = countdownLength;
-        } 
+    public void restartGame(){
+
+        state = "COUNTDOWN";
+        timeRemaining = countdownLength;
+        gameplayUICanvas.enabled = true;
+
     }
 
     void countdown(){
-        announcementTEXT.text = ("");
-        if (timeRemaining > 0)
-        {
-            timeRemaining -= Time.deltaTime;
-            timeRemainingTEXT.text = timeRemaining.ToString("0");
 
+        announcementTEXT.text = "";
+
+        // While there's time in the countdown, decrement time
+        if (timeRemaining > 0){
+
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining < 2.5 && timeRemaining > 0){
+                timeRemainingTEXT.text = (timeRemaining + 1).ToString("0"); // +1 so it counts down, "3 2 1"
+            } else {
+                timeRemainingTEXT.text = "";
+            }
+            
+
+        // When time runs out, setup gameplay!
         } else {
+
+            timeRemainingTEXT.text = "";
 
             // Setup for gameplay
             state = "GAMEPLAY";
             timeRemaining = roundLengthSeconds;
             lessonRemaining = lessonLengthSeconds; 
-            lessonRateMultiplier = baseLessonRate;
+            lessonRateMultiplier = 1f;
+            
 
             // Spawn a grid of students
             for (int i = 3; i > 0; i--){
                 for(int j = 3; j > 0; j--){
                     
-                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-5);
+                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-1.5f); // don't touch the magic numbers ;)
 
                     // 50/50 to spawn M or F student
-                    var random = Random.Range(-10,10);
+                    var random = Random.Range(-100,100);
                     if(random > 0){
 
                         GameObject newStudent = Instantiate(studentPrefabFemale, spawnSpot, Quaternion.identity);
                         students.Add(newStudent);
 
                     } else {
+
                         GameObject newStudent = Instantiate(studentPrefabMale, spawnSpot, Quaternion.identity);
                         students.Add(newStudent);
+
                     }
                 }
             }
@@ -143,11 +150,10 @@ public class GameHandler : MonoBehaviour{
 
     void gameplay(){
 
+        // Update multiplier text
         lessonMultiplierTEXT.text = "LESSON MULTIPLIER: " + lessonRateMultiplier.ToString("0.00") + "x ";
         
-        timeRemainingTEXT.text = "";
-        
-        announcementTEXT.text = ("");
+        announcementTEXT.text = "";
 
         // While there is time in the round,
         if (timeRemaining >= 0){
@@ -162,37 +168,39 @@ public class GameHandler : MonoBehaviour{
             if (Input.GetKey("space")){
 
                 // Turn prof
-                _animator.SetBool("isTurning", true);
+                prof_animator.SetBool("isTurning", true);
 
                 // Reset lesson multiplier :(
-                lessonRateMultiplier = baseLessonRate;
+                lessonRateMultiplier = 1f;
 
             } else {
 
-                _animator.SetBool("isTurning", false);
-                    
-                lessonRemaining -= baseLessonPerTick * lessonRateMultiplier;
-                lessonRateMultiplier += lessonMultiplierGrowth;
+                prof_animator.SetBool("isTurning", false);
 
-                meterAmount = Mathf.Clamp(lessonRemaining, 0, lessonLengthSeconds);
-                //lessonBar.fillAmount = meterAmount / lessonLengthSeconds;
-                bookshelfTime.fillAmount = meterAmount / lessonLengthSeconds;
+                  
+                lessonRemaining -= Time.deltaTime * lessonRateMultiplier;
+                lessonRateMultiplier += 0.15f * Time.deltaTime;
+
+                bookshelfTime.SetValueWithoutNotify((lessonLengthSeconds-lessonRemaining)/lessonLengthSeconds);
             }
 
         // If there is no more time in the round  
-        } else {
+        } 
+        else {
 
-            // Set new state
+            // Set next state
             state = "FINISH";
-            timeRemaining = countdownLength;
+            timeRemaining = countdownLength - 1;
 
-            // Take a guess at what this method does :)
+            // calculate the score
             calculateScore();
 
+            // Remove the evidence
             foreach (var prefab in students){
                 Destroy(prefab);
             }
             students.Clear();
+
         }
     }
 
@@ -206,6 +214,7 @@ public class GameHandler : MonoBehaviour{
         }
 
         // Calculate the score
+        // % of lesson complete * 100, minus the number of students * 200
         int lessonCompleted = 100 - Mathf.CeilToInt(lessonRemaining);
         int escapedStudentsScore = (-1)*(lostPointsPerStudent)*(escapedStudents);
         int lessonCompletionScore = lessonCompleted * pointsPerLessonPercent;
@@ -222,15 +231,27 @@ public class GameHandler : MonoBehaviour{
 
         } else {
             state = "SCORE_SCREEN";
+
+             clockTime.fillAmount = 0f;
+
+            // Disable gameplay UI
+            gameplayUICanvas.enabled = false;
         }
     }
 
     void scoreScreen(){
+
+        cameraAnimator.SetBool("Score", true);
         announcementTEXT.text = ("Press Space to Restart");
+
         scoreTEXT.text = scoreBreakdownText;
+
         if (Input.GetKey("space")){
-            state = "SCENE_INTRO";
-            scoreTEXT.text = ("");
+
+            cameraAnimator.SetBool("Score", false);
+            scoreTEXT.text = "";
+            restartGame();
+
         }
     }
 }

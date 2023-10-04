@@ -28,19 +28,10 @@ public class newStudent : MonoBehaviour
     public float meterTotal;
     public Canvas meterCanvas;
 
-    // Track audio
-  private float resetFillAmount = 1.0f; // Adjust this value based on your meter reset condition
-    private bool audioPlayed = false; // Flag to track whether audio has been played for this instance
-    private static bool globalAudioPlayed = false; // Static flag to track whether audio has been played globally
-
     //DEBUG
     public TMP_Text debugText;
 
     Animator _animator;
-
-    public AudioClip[] audioClips; // Array of audio clips
-
-    private AudioSource audioSource; // Reference to the AudioSource component
 
 
     void Start() {
@@ -50,16 +41,11 @@ public class newStudent : MonoBehaviour
         timeUntilPacking = Random.Range(2.0f, 12.0f);
 
         meterCanvas.enabled = false;
-
-    // Initialize the audioSource variable to point to the AudioSource component on this GameObject
-    audioSource = GetComponent<AudioSource>();
-        // audioSourceStudent = gameObject.GetComponent<AudioSource>();
     }
 
     void Update(){
 
         debugText.text = state;
-        Debug.Log("Meter total is: " + meterBar.fillAmount);
 
         // Call the state's update method
         switch (state){
@@ -73,8 +59,6 @@ public class newStudent : MonoBehaviour
             escaping();
             break;
         }
-
-
     }
 
     // Handles idle behavior
@@ -82,19 +66,16 @@ public class newStudent : MonoBehaviour
 
         // If space is being held down, freeze
         if (Input.GetKey("space")){
-       
+
         } else {
             // Reduce hidden timer until meter appears (3 - 10 sec.)
             timeUntilPacking -= Time.deltaTime;
-
-
             if(timeUntilPacking <= 0f){
                 // Initiate packing sequence when timer expires
                 meterCanvas.enabled = true;
                 meterTotal = Random.Range(2.0f, 4.0f);
                 timeUntilEscaping = meterTotal;
-                state = "PACKING";              
-
+                state = "PACKING";
             }
         }
     }
@@ -105,14 +86,10 @@ public class newStudent : MonoBehaviour
         if (Input.GetKey("space")){
             timeUntilEscaping = meterTotal;
             setMeter();
-
         } else {
             // If space is not held, reduce timer until escape 
             timeUntilEscaping -= Time.deltaTime;
             setMeter();
-
-  
-                                            
             if(timeUntilEscaping <= 0f){
                 // Initiate escaping sequence when meter is gone
                 
@@ -194,9 +171,7 @@ public class newStudent : MonoBehaviour
             }
             // If student has reached front of class and out the door, the escape!
             else{
-
-              Destroy(gameObject);
-
+                Destroy(gameObject);
             }
         }
         
@@ -206,44 +181,6 @@ public class newStudent : MonoBehaviour
     void setMeter(){
         timeUntilEscaping = Mathf.Clamp(timeUntilEscaping, 0f, meterTotal);
         meterBar.fillAmount = timeUntilEscaping / meterTotal;
-            audioTriggers();
-
-    }
-
-// Function to manage auto triggers
-void audioTriggers() {
-    
-       // Check if the current fill amount is more than or equal to the reset fill amount
-        if (meterBar.fillAmount >= resetFillAmount)
-        {
-            // Reset the audio playing trackers if it is so that the sound can trigger again.
-            audioPlayed = false;
-            globalAudioPlayed = false;
-
-        }
-
-        // Calculate a random fill amount between 0.1 and 0.6
-        float randomFillAmount = Random.Range(0.1f, 0.6f);
-
-        // Check if the current fill amount is less than or equal to the random fill amount
-        if (meterBar.fillAmount <= randomFillAmount)
-        {
-            // Check if the audio has not been played yet for this instance and globally
-            if (!audioPlayed && !globalAudioPlayed)
-            {
-                // Get a random index from the audioClips array
-            int randomIndex = Random.Range(0, audioClips.Length);
-
-           // Play the randomly selected audio clip using the AudioSource component
-            audioSource.PlayOneShot(audioClips[randomIndex]);
-        
-
-
-                // Set the flags to true so the audio doesn't play again for this instance and globally
-                audioPlayed = true;
-                globalAudioPlayed = true;
-            }
-        }
     }
 
     void handleAnimation(){

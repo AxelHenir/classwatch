@@ -4,47 +4,52 @@ using UnityEngine;
 
 public class MainGameSounds : MonoBehaviour
 {
-    // Sounds
-    [SerializeField] private AudioSource audioSource1; // disgruntled teacher sound
-    [SerializeField] private AudioSource audioSource2; // disgruntled teacher sound
-    [SerializeField] private AudioSource audioSource3; // countdown beeping sound
-    [SerializeField] private AudioSource audioSource4; // chalk writing sound
-    [SerializeField] private AudioSource audioSource5; // chalk writing sound
-    [SerializeField] private AudioSource audioSource6; // bell ring sound
+    // SOunds
+    [SerializeField] private AudioSource audioSource1;
+    [SerializeField] private AudioSource audioSource2;
+    [SerializeField] private AudioSource audioSource3;
+    [SerializeField] private AudioSource audioSource4;
+    [SerializeField] private AudioSource audioSource5;
+    [SerializeField] private AudioSource audioSource6;
 
-    // String to track state
-    private string currentState; 
+    private string currentState; // Declare currentState at the class level
     private GameHandler gameHandler;
+    private float countdownDelay = 1f; // Set the delay time in seconds
     private float countdownTimer;
-
-    private int currentTimeRemaining = 0;
 
     private void Start()
     {
         gameHandler = FindObjectOfType<GameHandler>();
+        // if (gameHandler == null)
+        // {
+        //     Debug.LogError("GameHandler not found!");
+        // }
+
+        // // Make sure to assign audio sources through the Unity Editor
+        // if (audioSource1 == null || audioSource2 == null || audioSource3 == null)
+        // {
+        //     Debug.LogError("One or more audio sources are not assigned!");
+        // }
+
+        // Initialize the timer
+        countdownTimer = countdownDelay;
+
 
     }
 
 private void Update()
 {
-
-   // Trigger beeps during countdown
-    if (currentState == "COUNTDOWN" && currentTimeRemaining != (int)gameHandler.timeRemaining) {
-        audioSource3.Play();
-        currentTimeRemaining = (int)gameHandler.timeRemaining;
-    }
-
     currentState = gameHandler.state;
     Debug.Log("Current State: " + currentState);
 
-    // Stop chalk sounds when spacebar is pressed
+    // Stop audioSource4 and audioSource5 when spacebar is pressed
     if (currentState == "GAMEPLAY" && Input.GetKeyDown(KeyCode.Space))
     {
         audioSource4.Stop();
         audioSource5.Stop();
     }
 
-    // Play chalk writing sounds when spacebar is not pressed and neither is already playing
+    // Play audioSource4 or audioSource5 when spacebar is not pressed and neither is already playing
     if (currentState == "GAMEPLAY" && !Input.GetKey(KeyCode.Space) && !audioSource4.isPlaying && !audioSource5.isPlaying)
     {
         int randomSourceIndex = Random.Range(1, 3);
@@ -58,8 +63,6 @@ private void Update()
         }
     }
 
-
-    // If the user presses space randomly trigger one of the teacher disgruntled sounds
     if (currentState == "GAMEPLAY" && Input.GetKeyDown(KeyCode.Space))
     {
         int randomSourceIndex = Random.Range(1, 3);
@@ -73,22 +76,25 @@ private void Update()
         }
     }
 
+    if (currentState == "COUNTDOWN" && countdownTimer <= 0f)
+    {
+        audioSource3.Play();
+        countdownTimer = countdownDelay;
+    }
 
     countdownTimer -= Time.deltaTime;
 
     if (currentState == "FINISH")
     {
-        if(audioSource6.isPlaying == false) {
         // When the level is complete play the ring
         audioSource6.Play();
+
         // Stop the chalk sounds
         audioSource4.Stop();
         audioSource5.Stop();
+    }
 
-       }
-  
-     }
+}
 
-   }
 
 }
