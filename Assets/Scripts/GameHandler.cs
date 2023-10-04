@@ -128,7 +128,7 @@ public class GameHandler : MonoBehaviour{
             for (int i = 3; i > 0; i--){
                 for(int j = 3; j > 0; j--){
                     
-                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-1); // don't touch the magic numbers ;)
+                    Vector3 spawnSpot = new Vector3(4*i-16,0,4*j-1.5f); // don't touch the magic numbers ;)
 
                     // 50/50 to spawn M or F student
                     var random = Random.Range(-100,100);
