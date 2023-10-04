@@ -30,7 +30,7 @@ public class GameHandler : MonoBehaviour{
 
     // Countdown
     public int countdownLength = 3;
-    float timeRemaining;
+    public float timeRemaining;
     public Image bookshelfTime;
     public Image clockTime;
 
